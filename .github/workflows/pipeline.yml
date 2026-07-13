@@ -28,7 +28,7 @@ jobs:
 
       - name: Ejecutar Checkov
         if: always()
-        run: checkov -d . --soft-fail
+        run: checkov -d . --skip-check CKV2_AWS_12
 
 
   validate:
