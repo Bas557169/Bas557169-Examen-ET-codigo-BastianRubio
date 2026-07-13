@@ -1,0 +1,41 @@
+name: Pipeline Infraestructura
+
+on:
+  push:
+    branches: [ infraestructura ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  tflint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+      - name: Instalar TFLint
+        run: |
+          curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash
+      - name: Ejecutar TFLint
+        run: tflint --init && tflint
+
+  checkov:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+      - name: Instalar Checkov
+        run: pip install checkov
+      - name: Ejecutar Checkov
+        run: checkov -d .
+
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+      - name: Instalar Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.9.0
+      - name: Validar Terraform
+        run: terraform validate
