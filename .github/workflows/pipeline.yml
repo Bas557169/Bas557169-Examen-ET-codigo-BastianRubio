@@ -37,5 +37,7 @@ jobs:
         uses: hashicorp/setup-terraform@v2
         with:
           terraform_version: 1.9.0
+      - name: Inicializar Terraform
+        run: terraform init
       - name: Validar Terraform
         run: terraform validate
