@@ -41,10 +41,11 @@ resource "aws_subnet" "duoc_subnet" {
   }
 }
 
-# Security Group con descripciones completas
+# Security Group con descripción a nivel de recurso
 resource "aws_security_group" "duoc_sg" {
-  vpc_id = aws_vpc.duoc_vpc.id
-  name   = "DUOC-SG"
+  vpc_id      = aws_vpc.duoc_vpc.id
+  name        = "DUOC-SG"
+  description = "DUOC-SG principal con reglas de laboratorio"
 
   ingress {
     description = "Allow SSH from lab subnet"
