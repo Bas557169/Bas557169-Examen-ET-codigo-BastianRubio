@@ -41,7 +41,7 @@ resource "aws_subnet" "duoc_subnet" {
   }
 }
 
-# Security Group más restrictivo
+# Security Group con descripciones completas
 resource "aws_security_group" "duoc_sg" {
   vpc_id = aws_vpc.duoc_vpc.id
   name   = "DUOC-SG"
@@ -75,7 +75,7 @@ resource "aws_security_group" "duoc_sg" {
   }
 }
 
-# Reglas para restringir el SG por defecto de la VPC
+# Restringir el SG por defecto de la VPC
 resource "aws_default_security_group" "duoc_default_sg" {
   vpc_id = aws_vpc.duoc_vpc.id
 
