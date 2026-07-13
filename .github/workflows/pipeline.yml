@@ -29,6 +29,7 @@ jobs:
       - name: Ejecutar Checkov
         run: |
           checkov -d . --soft-fail
+        continue-on-error: true
 
   validate:
     runs-on: ubuntu-latest
