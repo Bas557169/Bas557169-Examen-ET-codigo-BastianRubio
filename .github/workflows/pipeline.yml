@@ -27,9 +27,9 @@ jobs:
         run: pip install checkov
 
       - name: Ejecutar Checkov
-        run: |
-          checkov -d . --soft-fail
         continue-on-error: true
+        run: checkov -d . --soft-fail
+
 
   validate:
     runs-on: ubuntu-latest
