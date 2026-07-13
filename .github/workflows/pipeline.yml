@@ -2,7 +2,7 @@ name: Pipeline Infraestructura
 
 on:
   push:
-    branches: [ infraestructura ]
+    branches: [ infraestructura, automatizacion ]
   pull_request:
     branches: [ main ]
 
