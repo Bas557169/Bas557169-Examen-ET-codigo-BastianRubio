@@ -76,9 +76,11 @@ resource "aws_security_group" "duoc_sg" {
   }
 }
 
-# Restringir el SG por defecto de la VPC (sin description en el recurso)
+# Restringir el SG por defecto de la VPC
 resource "aws_default_security_group" "duoc_default_sg" {
   vpc_id = aws_vpc.duoc_vpc.id
+
+  revoke_rules_on_delete = true
 
   ingress {
     description = "Block all ingress"
