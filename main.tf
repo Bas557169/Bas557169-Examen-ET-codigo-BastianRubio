@@ -76,27 +76,10 @@ resource "aws_security_group" "duoc_sg" {
   }
 }
 
-# Restringir el SG por defecto de la VPC
+# Restringir el SG por defecto de la VPC de forma limpia
+# (La ausencia de bloques ingress/egress le dice a Terraform que elimine todas las reglas)
 resource "aws_default_security_group" "duoc_default_sg" {
   vpc_id = aws_vpc.duoc_vpc.id
-
-  revoke_rules_on_delete = true
-
-  ingress {
-    description = "Block all ingress"
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = []
-  }
-
-  egress {
-    description = "Block all egress"
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = []
-  }
 
   tags = {
     Name = "DUOC-Default-SG"
@@ -125,9 +108,9 @@ EOF
 
 # Instancia EC2 con mejoras de seguridad
 resource "aws_instance" "duoc_ec2" {
-  ami           = "ami-0c02fb55956c7d316" # Ubuntu 20.04 en us-east-1
-  instance_type = "t2.micro"
-  subnet_id     = aws_subnet.duoc_subnet.id
+  ami                    = "ami-0c02fb55956c7d316" # Ubuntu 20.04 en us-east-1
+  instance_type          = "t2.micro"
+  subnet_id              = aws_subnet.duoc_subnet.id
   vpc_security_group_ids = [aws_security_group.duoc_sg.id]
   iam_instance_profile   = aws_iam_role.duoc_ec2_role.name
   ebs_optimized          = true
