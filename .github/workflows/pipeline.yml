@@ -1,5 +1,8 @@
 name: Pipeline Infraestructura
 
+permissions:
+  contents: read
+
 on:
   push:
     branches: [ infraestructura, automatizacion ]
