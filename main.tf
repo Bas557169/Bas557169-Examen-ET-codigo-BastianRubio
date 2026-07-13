@@ -76,10 +76,14 @@ resource "aws_security_group" "duoc_sg" {
   }
 }
 
-# Restringir el SG por defecto de la VPC de forma limpia
-# (La ausencia de bloques ingress/egress le dice a Terraform que elimine todas las reglas)
+# Restringir el SG por defecto con la sintaxis estricta de Checkov
 resource "aws_default_security_group" "duoc_default_sg" {
   vpc_id = aws_vpc.duoc_vpc.id
+
+  # Al definir "ingress" y "egress" completamente vacíos de esta forma,
+  # Checkov es capaz de leer y parsear que NO se permite ningún tráfico.
+  ingress = []
+  egress  = []
 
   tags = {
     Name = "DUOC-Default-SG"
