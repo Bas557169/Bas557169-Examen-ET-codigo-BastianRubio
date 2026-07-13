@@ -41,37 +41,62 @@ resource "aws_subnet" "duoc_subnet" {
   }
 }
 
-# Security Group con reglas válidas
+# Security Group más restrictivo
 resource "aws_security_group" "duoc_sg" {
   vpc_id = aws_vpc.duoc_vpc.id
   name   = "DUOC-SG"
 
   ingress {
-    description = "Allow SSH (lab)"
+    description = "Allow SSH from lab subnet"
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"] # válido para Terraform, luego lo documentas como inseguro
+    cidr_blocks = ["10.0.1.0/24"]
   }
 
   ingress {
-    description = "Allow HTTP from anywhere"
+    description = "Allow HTTP from lab subnet"
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = ["10.0.1.0/24"]
   }
 
   egress {
-    description = "Allow all outbound traffic"
+    description = "Allow outbound to lab subnet"
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = ["10.0.1.0/24"]
   }
 
   tags = {
     Name = "DUOC-SG"
+  }
+}
+
+# Reglas para restringir el SG por defecto de la VPC
+resource "aws_default_security_group" "duoc_default_sg" {
+  vpc_id = aws_vpc.duoc_vpc.id
+
+  ingress {
+    description = "Restrict all ingress"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = []
+  }
+
+  egress {
+    description = "Restrict all egress"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = []
+  }
+
+  tags = {
+    Name = "DUOC-Default-SG"
   }
 }
 
