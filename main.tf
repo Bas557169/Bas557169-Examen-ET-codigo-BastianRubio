@@ -24,7 +24,6 @@ resource "aws_vpc" "duoc_vpc" {
   }
 }
 
-# Flow Logs (simulado, enviando a CloudWatch)
 resource "aws_flow_log" "duoc_vpc_flow" {
   vpc_id          = aws_vpc.duoc_vpc.id
   traffic_type    = "ALL"
@@ -42,17 +41,17 @@ resource "aws_subnet" "duoc_subnet" {
   }
 }
 
-# Security Group con reglas más seguras
+# Security Group con reglas válidas
 resource "aws_security_group" "duoc_sg" {
   vpc_id = aws_vpc.duoc_vpc.id
   name   = "DUOC-SG"
 
   ingress {
-    description = "Allow SSH from my IP"
+    description = "Allow SSH (lab)"
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["X.X.X.X/32"] # reemplaza con tu IP pública
+    cidr_blocks = ["0.0.0.0/0"] # válido para Terraform, luego lo documentas como inseguro
   }
 
   ingress {
@@ -107,7 +106,7 @@ resource "aws_instance" "duoc_ec2" {
   monitoring             = true
 
   metadata_options {
-    http_tokens = "required" # fuerza IMDSv2
+    http_tokens = "required"
   }
 
   root_block_device {
