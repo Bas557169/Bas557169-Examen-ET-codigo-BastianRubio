@@ -41,7 +41,7 @@ resource "aws_subnet" "duoc_subnet" {
   }
 }
 
-# Security Group con descripción a nivel de recurso y reglas
+# Security Group con descripción a nivel de recurso
 resource "aws_security_group" "duoc_sg" {
   vpc_id      = aws_vpc.duoc_vpc.id
   name        = "DUOC-SG"
@@ -76,10 +76,9 @@ resource "aws_security_group" "duoc_sg" {
   }
 }
 
-# Restringir el SG por defecto de la VPC
+# Restringir el SG por defecto de la VPC (sin description en el recurso)
 resource "aws_default_security_group" "duoc_default_sg" {
-  vpc_id      = aws_vpc.duoc_vpc.id
-  description = "Default SG restricted"
+  vpc_id = aws_vpc.duoc_vpc.id
 
   ingress {
     description = "Block all ingress"
