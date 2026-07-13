@@ -27,7 +27,7 @@ jobs:
         run: pip install checkov
 
       - name: Ejecutar Checkov
-        continue-on-error: true
+        if: always()
         run: checkov -d . --soft-fail
 
 
