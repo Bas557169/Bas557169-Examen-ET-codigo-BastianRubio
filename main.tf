@@ -80,7 +80,7 @@ resource "aws_default_security_group" "duoc_default_sg" {
   vpc_id = aws_vpc.duoc_vpc.id
 
   ingress {
-    description = "Restrict all ingress"
+    description = "Block all ingress"
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
@@ -88,7 +88,7 @@ resource "aws_default_security_group" "duoc_default_sg" {
   }
 
   egress {
-    description = "Restrict all egress"
+    description = "Block all egress"
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
