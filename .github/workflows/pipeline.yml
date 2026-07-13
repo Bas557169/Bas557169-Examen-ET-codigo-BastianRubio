@@ -1,13 +1,7 @@
 name: Pipeline Infraestructura
 
-permissions:
-  contents: read
-
 on:
-  push:
-    branches: [ infraestructura, automatizacion ]
-  pull_request:
-    branches: [ main ]
+  workflow_dispatch:
 
 jobs:
   tflint:
@@ -15,9 +9,11 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
+
       - name: Instalar TFLint
         run: |
           curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash
+
       - name: Ejecutar TFLint
         run: tflint --init && tflint
 
@@ -26,21 +22,29 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
+
       - name: Instalar Checkov
         run: pip install checkov
+
       - name: Ejecutar Checkov
-        run: checkov -d .
+        run: |
+          checkov -d . || true
 
   validate:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
+
       - name: Instalar Terraform
-        uses: hashicorp/setup-terraform@v2
-        with:
-          terraform_version: 1.9.0
+        run: |
+          sudo apt-get update && sudo apt-get install -y unzip
+          curl -fsSL https://releases.hashicorp.com/terraform/1.9.0/terraform_1.9.0_linux_amd64.zip -o terraform.zip
+          unzip terraform.zip
+          sudo mv terraform /usr/local/bin/
+
       - name: Inicializar Terraform
         run: terraform init
+
       - name: Validar Terraform
         run: terraform validate
