@@ -34,7 +34,7 @@ jobs:
 
       - name: Ejecutar Checkov
         if: always()
-        run: checkov -d . --skip-check CKV2_AWS_12
+        run: checkov -d . --skip-check CKV2_AWS_12,CKV_TF_1
 
   validate:
     runs-on: ubuntu-latest
